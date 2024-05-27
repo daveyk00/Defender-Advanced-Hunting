@@ -1,0 +1,24 @@
+DeviceInfo
+// | where Timestamp > ago(7d)
+| where Timestamp between (datetime(2024-05-18) .. datetime(2024-05-21))
+| where DeviceId == "XXXXXXXXXXXXXXXXXXXXX"
+| join kind=inner (
+    DeviceNetworkEvents
+    | where Timestamp between (datetime(2024-05-18) .. datetime(2024-05-21))
+    | where RemoteUrl !contains ".microsoft.com"
+    | where RemoteUrl !contains "ocsp"
+    | where RemoteUrl !contains "windowsupdate.com"
+    | where RemoteUrl !contains "msn.com"
+    | where RemoteUrl !contains "login.microsoftonline.com"
+    | where RemoteUrl !contains "bing.com"
+    | where RemoteUrl !contains "msedge.net"
+    | where RemoteUrl !contains "login.live.com"
+    | where RemoteUrl !contains "mira.office.com"
+    | where RemoteUrl !contains "lencr.org"
+    | where RemoteUrl !contains "ms-rt-microsoft-com.akamaized.net"
+    | where RemoteUrl !contains "xbox"
+    | where RemoteUrl != ""
+    | where RemoteIP != "127.0.0.1"
+) on DeviceId
+| summarize count() by RemoteUrl
+// | take 10

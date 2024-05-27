@@ -1,0 +1,5 @@
+CloudAppEvents
+| where ActionType == @"FileUploadedToCloud"
+| where RawEventData.TargetDomain !="CUSTOMER.sharepoint.com"
+| where RawEventData.TargetDomain !="admin.CUSTOMER.com.au"
+| where RawEventData.TargetDomain !="go.xero.com"

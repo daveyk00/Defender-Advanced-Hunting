@@ -1,0 +1,4 @@
+DeviceEvents
+| where ActionType startswith "ScreenshotTaken"
+// | where DeviceId == "XXXXXXXXXXXXXXXXXXXXX"
+| project Timestamp,DeviceName, InitiatingProcessFileName, InitiatingProcessAccountUpn

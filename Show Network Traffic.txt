@@ -1,0 +1,20 @@
+DeviceInfo
+// | where Timestamp > ago(7d)
+| where Timestamp between (datetime(2024-05-18) .. datetime(2024-05-21))
+| where DeviceId == "XXXXXXXXXXXXXXXXXXXXX"
+| join kind=inner (
+    DeviceNetworkEvents
+    | where Timestamp between (datetime(2024-05-18) .. datetime(2024-05-21))
+    | where InitiatingProcessFileName == ""
+    | where ActionType !contains "Ssl"
+//    | where RemoteUrl == ""
+//  | where RemotePort == "443"
+| where RemotePort != "7680"
+| where ActionType != @"NetworkSignatureInspected"
+| where ActionType != @"DnsConnectionInspected"
+| where ActionType != @"HttpConnectionInspected"
+| where ActionType != @"ConnectionAcknowledged"
+| where ActionType != @"IcmpConnectionInspected"
+) on DeviceId
+// | summarize count() by InitiatingProcessFileName
+// | take 10
