@@ -16,5 +16,5 @@ FileName, FolderPath, SHA256, Timestamp, SensitivityLabel, IsAzureInfoProtection
 FileCreation | lookup kind=inner (UsbDriveMount) on DeviceId
 | where FolderPath startswith DriveLetter
 | where Timestamp >= MountTime
-| partition by ReportId ( top 1 by MountTime )
+| partition hint.strategy=native by ReportId ( top 1 by MountTime )
 | order by DeviceId asc, Timestamp desc
